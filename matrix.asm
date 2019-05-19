@@ -26,10 +26,11 @@ section .rodata
     average_row_msg:            db      9, "%d -> %d", nl, 0
     result_msg:                 db      "Rows comply the condition:", nl, 0
     unsuccess_msg:              db      9, "No such rows", nl, 0
+    input_error_msg:            db      "Incorrect input number! Choose number in range [1, 20]", nl, 0
 
 section .data
-    matrix:         times 512   dd      0
-    sums:           times  64   dd      0
+    matrix:         times 2048   dd      0
+    sums:           times   64   dd      0
 
 section .bss
     count_rows:                 resb    8
@@ -55,6 +56,11 @@ section .text
         to_int count_rows
         mov [count_rows], rax
 
+        cmp byte[count_rows], 0
+        je .input_error
+        cmp byte[count_rows], 20
+        jg .input_error
+
         mov rax, SYS_WRITE
         mov rdi, STDOUT_FLAG
         mov rsi, count_matrix_cols_msg
@@ -69,6 +75,11 @@ section .text
 
         to_int count_cols
         mov [count_cols], rax
+
+        cmp byte[count_cols], 0
+        je .input_error
+        cmp byte[count_cols], 20
+        jg .input_error
         ;; END
 
         println
@@ -257,4 +268,14 @@ section .text
             mov rax, SYS_EXIT
             mov rdi, 0
             syscall
+        ;; END
+
+        ;; BEGIN: The function to print about incorrect input number
+        .input_error:
+            push rbx
+            lea rdi, [rel input_error_msg]
+            mov rax, 0
+            call _printf
+            pop rbx
+            jmp .exit
         ;; END
