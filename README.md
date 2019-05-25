@@ -15,10 +15,16 @@ Assembly - Simple Operations
 $> ./launcher.sh nasm <SCRIPT_NAME>
 ```
 
-2. C launguage
+2. C language:
 
 ```console
 $> ./launcher.sh c <SCRIPT_NAME>
+```
+
+3. C++ language:
+
+```console
+$> ./launcher.sh cpp <SCRIPT_NAME>
 ```
 
 ## Exmaple of work

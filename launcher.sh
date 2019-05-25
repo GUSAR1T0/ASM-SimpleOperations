@@ -1,8 +1,8 @@
 #!/bin/bash
 
 lang=`echo "$1" | awk '{print tolower($0)}'`
-if [ "$#" -ne 2 ] || [ "$lang" != "nasm" ] && [ "$lang" != "c" ]; then
-    echo "Incorrect parameters: ./launcher.sh (nasm|c) <script_name>"
+if [ "$#" -ne 2 ] || [ "$lang" != "nasm" ] && [ "$lang" != "c" ] && [ "$lang" != "cpp" ]; then
+    echo "Incorrect parameters: ./launcher.sh (nasm|c|cpp) <script_name>"
     exit 1
 fi
 
