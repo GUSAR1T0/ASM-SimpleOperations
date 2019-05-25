@@ -10,25 +10,41 @@
 
 #define STRING_SIZE 1024
 
+struct String
+{
+    char input[STRING_SIZE];
+};
+
+void result(struct String *string);
+
 int main()
 {
-    char string[STRING_SIZE];
+    struct String string;
     print("Enter the original string:\n");
-    scanf("%[^\n]%*c", string);
+    scanf("%[^\n]%*c", string.input);
 
     println();
 
     print("The reworked string:\n");
+    result(&string);
+
+    println();
+
+    return 0;
+}
+
+void result(struct String *string)
+{
     int flag = 0, count0 = 0, count1 = 0;
-    for (int i = 0; i < STRING_SIZE && string[i] != '\0'; i++)
+    for (int i = 0; i < STRING_SIZE && string->input[i] != '\0'; i++)
     {
         if (flag == 0)
         {
-            if (string[i] == '0')
+            if (string->input[i] == '0')
             {
                 count0++;
             }
-            else if (string[i] == '1')
+            else if (string->input[i] == '1')
             {
                 count1++;
             }
@@ -39,18 +55,15 @@ int main()
         }
         else
         {
-            if (string[i] == '0')
+            if (string->input[i] == '0')
             {
-                string[i] = '1';
+                string->input[i] = '1';
             }
-            else if (string[i] == '1')
+            else if (string->input[i] == '1')
             {
-                string[i] = '0';
+                string->input[i] = '0';
             }
         }
-        printf("%c", string[i]);
+        printf("%c", string->input[i]);
     }
-    println();
-
-    return 0;
 }

@@ -21,7 +21,7 @@ section .rodata
     .length:                    equ     $ - nothing_changed_msg
 
 section .bss
-    string:                     resb    STRING_SIZE
+    input:                      resb    STRING_SIZE
 
 section .text
     _main:
@@ -34,13 +34,13 @@ section .text
         
         mov rax, SYS_READ
         mov rdi, STDIN_FLAG
-        mov rsi, string
+        mov rsi, input
         mov rdx, STRING_SIZE
         syscall
         ;; END
 
         ;; BEGIN: Replace symbols when the condition is reached
-        mov r12, string
+        mov r12, input
         mov r13, 0
         mov r14, 0
         mov rax, 0
@@ -83,7 +83,7 @@ section .text
         jne .nothing_changed
         mov rax, SYS_WRITE
         mov rdi, STDOUT_FLAG
-        mov rsi, string
+        mov rsi, input
         mov rdx, STRING_SIZE
         syscall
         jmp .exit
