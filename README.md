@@ -1,9 +1,14 @@
 # ASM-SimpleOperations
 
-Assembly - Simple Operations - NASM for macOS (x64):
+Assembly - Simple Operations:
 
-1. **Matrix**: determine the line numbers, the arithmetic average of elements that are less than the specified value.
-2. **String**: replace all zeros with ones in the text, and ones with zeros, starting from the position in which the number of preceding ones exceeds the number of preceding zeros by 1. 
+1. NASM for macOS (x64)
+2. C++
+
+## Tasks
+
+3. **Matrix**: determine the line numbers, the arithmetic average of elements that are less than the specified value.
+4. **String**: replace all zeros with ones in the text, and ones with zeros, starting from the position in which the number of preceding ones exceeds the number of preceding zeros by 1. 
 
 ## Exmaple of work
 

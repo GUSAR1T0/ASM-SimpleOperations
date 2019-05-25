@@ -14,11 +14,11 @@ default rel
 %include 'utils.asm'
 
 section .rodata
-    count_matrix_rows_msg:      db      "Count of matrix rows: "
+    count_matrix_rows_msg:      db      "Count of matrix rows: ", 0
     .length:                    equ     $ - count_matrix_rows_msg
-    count_matrix_cols_msg:      db      "Count of matrix cols: "
+    count_matrix_cols_msg:      db      "Count of matrix cols: ", 0
     .length:                    equ     $ - count_matrix_cols_msg
-    comparison_number_msg:      db      "Number for average values comparison: "
+    comparison_number_msg:      db      "Number for average values comparison: ", 0
     .length:                    equ     $ - comparison_number_msg
     matrix_info_msg:            db      "Matrix (size = %dx%d, total = %d):", nl, 0
     matrix_element_msg:         db      9, "%d", 0
@@ -26,11 +26,11 @@ section .rodata
     average_row_msg:            db      9, "%d -> %d", nl, 0
     result_msg:                 db      "Rows comply the condition:", nl, 0
     unsuccess_msg:              db      9, "No such rows", nl, 0
-    input_error_msg:            db      "Incorrect input number! Choose number in range [1, 20]", nl, 0
+    input_error_msg:            db      "Incorrect input number! Choose number in range [%d, %d]", nl, 0
 
 section .data
-    matrix:         times 2048   dd      0
-    sums:           times   64   dd      0
+    matrix:         times 2048  dd      0
+    sums:           times   64  dd      0
 
 section .bss
     count_rows:                 resb    8
@@ -56,10 +56,16 @@ section .text
         to_int count_rows
         mov [count_rows], rax
 
+        push rsi
+        push rdx
+        mov rsi, 1
+        mov rdx, 20
         cmp byte[count_rows], 0
         je .input_error
         cmp byte[count_rows], 20
         jg .input_error
+        pop rdx
+        pop rsi
 
         mov rax, SYS_WRITE
         mov rdi, STDOUT_FLAG
@@ -76,10 +82,16 @@ section .text
         to_int count_cols
         mov [count_cols], rax
 
+        push rsi
+        push rdx
+        mov rsi, 1
+        mov rdx, 20
         cmp byte[count_cols], 0
         je .input_error
         cmp byte[count_cols], 20
         jg .input_error
+        pop rdx
+        pop rsi
         ;; END
 
         println
@@ -217,6 +229,17 @@ section .text
 
         to_int avg_number
         mov [avg_number], rax
+
+        push rsi
+        push rdx
+        mov rsi, 0
+        mov rdx, 101
+        cmp byte[avg_number], 0
+        jl .input_error
+        cmp byte[avg_number], 101
+        jg .input_error
+        pop rdx
+        pop rsi
         ;; END
 
         println
