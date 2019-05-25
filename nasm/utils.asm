@@ -8,13 +8,17 @@
 %define STRING_SIZE 1024
 %define nl 10
 
-;; Prints new line
-%macro println 0
-    push rbx
-    lea rdi, [rel new_line]
-    mov rax, 0
-    call _printf
-    pop rbx
+%macro range_check 3
+    push rsi
+    push rdx
+    mov rsi, %1
+    mov rdx, %2
+    cmp byte[%3], %1
+    jl .input_error
+    cmp byte[%3], %2
+    jg .input_error
+    pop rdx
+    pop rsi
 %endmacro
 
 ;; Multiplies two integers.
@@ -66,5 +70,35 @@
     pop rdi
 %endmacro
 
+;; BEGIN: The function to print a new line
+.println:
+    push rbx
+    push rax
+    lea rdi, [rel new_line]
+    mov rax, 0
+    call _printf
+    pop rax
+    pop rbx
+    ret
+;; END
+
+;; BEGIN: The function to print about incorrect input number
+.input_error:
+    push rbx
+    lea rdi, [rel input_error_msg]
+    mov rax, 0
+    call _printf
+    pop rbx
+    jmp .exit
+;; END
+
+;; BEGIN: The function to exit a program
+.exit:
+    mov rax, SYS_EXIT
+    mov rdi, 0
+    syscall
+;; END
+
 section .rodata
-    new_line:       db      nl, 0
+    new_line:                   db      nl, 0
+    input_error_msg:            db      "Incorrect input number! Choose number in range [%d, %d]", nl, 0

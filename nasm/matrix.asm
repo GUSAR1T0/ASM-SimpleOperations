@@ -26,7 +26,6 @@ section .rodata
     average_row_msg:            db      9, "%d -> %d", nl, 0
     result_msg:                 db      "Rows comply the condition:", nl, 0
     unsuccess_msg:              db      9, "No such rows", nl, 0
-    input_error_msg:            db      "Incorrect input number! Choose number in range [%d, %d]", nl, 0
 
 section .data
     matrix:         times 2048  dd      0
@@ -56,16 +55,7 @@ section .text
         to_int count_rows
         mov [count_rows], rax
 
-        push rsi
-        push rdx
-        mov rsi, 1
-        mov rdx, 20
-        cmp byte[count_rows], 0
-        je .input_error
-        cmp byte[count_rows], 20
-        jg .input_error
-        pop rdx
-        pop rsi
+        range_check 1, 20, count_rows
 
         mov rax, SYS_WRITE
         mov rdi, STDOUT_FLAG
@@ -82,19 +72,10 @@ section .text
         to_int count_cols
         mov [count_cols], rax
 
-        push rsi
-        push rdx
-        mov rsi, 1
-        mov rdx, 20
-        cmp byte[count_cols], 0
-        je .input_error
-        cmp byte[count_cols], 20
-        jg .input_error
-        pop rdx
-        pop rsi
+        range_check 1, 20, count_cols
         ;; END
 
-        println
+        call .println
 
         ;; BEGIN: Get count of all elements
         multiplier [count_rows], [count_cols]
@@ -132,7 +113,7 @@ section .text
             inc r14
             cmp r14, [count_cols]
             jne .matrix_init_end
-            println
+            call .println
             .matrix_init_end:
 
             pop rcx
@@ -182,7 +163,7 @@ section .text
             jne .matrix_average
         ;; END
 
-        println
+        call .println
 
         ;; BEGIN: Print average row values
         push rbx
@@ -212,7 +193,7 @@ section .text
             jne .matrix_print
         ;; END
 
-        println
+        call .println
 
         ;; BEGIN: Read data from keyboard (number for comparison)
         mov rax, SYS_WRITE
@@ -230,19 +211,10 @@ section .text
         to_int avg_number
         mov [avg_number], rax
 
-        push rsi
-        push rdx
-        mov rsi, 0
-        mov rdx, 101
-        cmp byte[avg_number], 0
-        jl .input_error
-        cmp byte[avg_number], 101
-        jg .input_error
-        pop rdx
-        pop rsi
+        range_check 0, 101, avg_number
         ;; END
 
-        println
+        call .println
 
         ;; BEGIN: Print result
         push rbx
@@ -284,21 +256,4 @@ section .text
         mov rax, 0
         call _printf
         pop rbx
-        ;; END
-
-        ;; BEGIN: Exit
-        .exit:
-            mov rax, SYS_EXIT
-            mov rdi, 0
-            syscall
-        ;; END
-
-        ;; BEGIN: The function to print about incorrect input number
-        .input_error:
-            push rbx
-            lea rdi, [rel input_error_msg]
-            mov rax, 0
-            call _printf
-            pop rbx
-            jmp .exit
         ;; END

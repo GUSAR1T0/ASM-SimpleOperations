@@ -50,7 +50,7 @@ int main()
         }
         printf("%c", string[i]);
     }
-    print("\n");
+    println();
 
     return 0;
 }

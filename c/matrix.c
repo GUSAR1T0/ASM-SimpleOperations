@@ -7,7 +7,6 @@
 
 #include "utils.c"
 
-const char *input_error_msg = "Incorrect input number! Choose number in range [%d, %d]\n";
 const char *average_row_msg = "\t%d -> %d\n";
 
 int main()
@@ -15,20 +14,12 @@ int main()
     int count_rows;
     print("Count of matrix rows: ");
     scanf("%d", &count_rows);
-    if (count_rows < 1 || count_rows > 20)
-    {
-        printf(input_error_msg, 1, 20);
-        return 0;
-    }
+    rangeCheck(1, 20, count_rows);
 
     int count_cols;
     print("Count of matrix cols: ");
     scanf("%d", &count_cols);
-    if (count_cols < 1 || count_cols > 20)
-    {
-        printf(input_error_msg, 1, 20);
-        return 0;
-    }
+    rangeCheck(1, 20, count_cols);
 
     println();
 
@@ -66,11 +57,7 @@ int main()
     int avg_number;
     print("Number for average values comparison: ");
     scanf("%d", &avg_number);
-    if (avg_number < 0 || avg_number > 101)
-    {
-        printf(input_error_msg, 0, 101);
-        return 0;
-    }
+    rangeCheck(0, 101, avg_number);
 
     println();
 

@@ -70,7 +70,7 @@ section .text
         mov r15, rax
         ;; END
 
-        println
+        call .println
 
         ;; BEGIN: Print the reworked string
         mov rax, SYS_WRITE
@@ -92,13 +92,6 @@ section .text
             mov rdi, STDOUT_FLAG
             mov rsi, nothing_changed_msg
             mov rdx, nothing_changed_msg.length
-            syscall
-        ;; END
-
-        ;; BEGIN: Exit
-        .exit:
-            mov rax, SYS_EXIT
-            mov rdi, 0
             syscall
         ;; END
 

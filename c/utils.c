@@ -2,6 +2,15 @@
 #include <stdlib.h>
 #include <time.h>
 
+void rangeCheck(int lower, int upper, int number)
+{
+    if (number < lower || number > upper)
+    {
+        printf("Incorrect input number! Choose number in range [%d, %d]\n", lower, upper);
+        exit(0);
+    }
+}
+
 void println()
 {
     printf("\n");
