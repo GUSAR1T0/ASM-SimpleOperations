@@ -1,8 +1,8 @@
 #!/bin/bash
 
 lang=`echo "$1" | awk '{print tolower($0)}'`
-if [ "$#" -ne 2 ] || [ "$lang" != "nasm" ] && [ "$lang" != "c" ] && [ "$lang" != "cpp" ]; then
-    echo "Incorrect parameters: ./launcher.sh (nasm|c|cpp) <script_name>"
+if [ "$#" -ne 2 ] || [ "$lang" != "nasm" ] && [ "$lang" != "c" ] && [ "$lang" != "cpp" ] && [ "$lang" != "csharp" ]; then
+    echo "Incorrect parameters: ./launcher.sh (nasm|c|cpp|csharp) <script_name>"
     exit 1
 fi
 
@@ -18,7 +18,11 @@ if [ "$?" -ne 0 ]; then
 fi
 
 if [ "$?" -eq 0 ]; then
-    eval ./$2.b
+    if [ "$lang" != "csharp" ]; then
+        eval ./$2.b
+    else
+        eval mono $2.b
+    fi
 else
     rm -rf $2.b $2.o
 fi

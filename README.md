@@ -27,6 +27,12 @@ $> ./launcher.sh c <SCRIPT_NAME>
 $> ./launcher.sh cpp <SCRIPT_NAME>
 ```
 
+4. C# language for macOS w/ Mono Framework:
+
+```console
+$> ./launcher.sh csharp <SCRIPT_NAME>
+```
+
 ## Exmaple of work
 
 ```console
