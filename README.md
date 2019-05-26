@@ -9,31 +9,25 @@ Assembly - Simple Operations
 
 ## Launcher
 
-1. NASM for macOS (x64):
+### Arguments
 
 ```console
-$> ./launcher.sh nasm <SCRIPT_NAME>
+$> ./launcher.sh (nasm|c|cpp|csharp) (matrix|string) [-p]
 ```
 
-2. C language:
+- `./launcher.sh` - launcher script in repository root
+- `(nasm|c|cpp|csharp)` - available languages
+- `(matrix|string)` - implemented tasks
+- `[-p]` - optional, using prepared data
 
-```console
-$> ./launcher.sh c <SCRIPT_NAME>
-```
+### Languages
 
-3. C++ language:
+1. NASM for macOS x64 (gcc)
+2. C language (clang/LLVM)
+3. C++ language (clang++/LLVM)
+4. C# language for macOS w/ Mono Framework (csc)
 
-```console
-$> ./launcher.sh cpp <SCRIPT_NAME>
-```
-
-4. C# language for macOS w/ Mono Framework:
-
-```console
-$> ./launcher.sh csharp <SCRIPT_NAME>
-```
-
-## Exmaple of work
+## Example of work
 
 ```console
 $> ./launcher.sh <LAUNGUAGE> matrix

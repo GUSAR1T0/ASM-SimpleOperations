@@ -6,8 +6,8 @@
 ;; -------------------------------------------------------------------------------------------------- ;;
 
 global _main
-extern _atoi
 extern _printf
+extern _scanf
 extern _randomize
 default rel
 
@@ -28,6 +28,7 @@ section .rodata
     average_row_msg:            db      9, "%d -> %d", nl, 0
     result_msg:                 db      "Rows comply the condition:", nl, 0
     unsuccess_msg:              db      9, "No such rows", nl, 0
+    format:                     db      "%d", 0
 
 section .data
     matrix:         times 2048  dd      0
@@ -48,14 +49,12 @@ section .text
         mov rdx, count_matrix_rows_msg.length       ; Length of string
         syscall
 
-        mov rax, SYS_READ
-        mov rdi, STDIN_FLAG
+        sub rsp, 8
         mov rsi, count_rows
-        mov rdx, 8
-        syscall
-
-        to_int count_rows
-        mov [count_rows], rax
+        mov rdi, format
+        mov al, 0
+        call _scanf
+        add rsp, 8
 
         range_check 1, 20, count_rows
 
@@ -65,14 +64,12 @@ section .text
         mov rdx, count_matrix_cols_msg.length
         syscall
 
-        mov rax, SYS_READ
-        mov rdi, STDIN_FLAG
+        sub rsp, 8
         mov rsi, count_cols
-        mov rdx, 8
-        syscall
-
-        to_int count_cols
-        mov [count_cols], rax
+        mov rdi, format
+        mov al, 0
+        call _scanf
+        add rsp, 8
 
         range_check 1, 20, count_cols
         ;; END
@@ -204,14 +201,12 @@ section .text
         mov rdx, comparison_number_msg.length
         syscall
 
-        mov rax, SYS_READ
-        mov rdi, STDIN_FLAG
+        sub rsp, 8
         mov rsi, avg_number
-        mov rdx, 8
-        syscall
-
-        to_int avg_number
-        mov [avg_number], rax
+        mov rdi, format
+        mov al, 0
+        call _scanf
+        add rsp, 8
 
         range_check 0, 101, avg_number
         ;; END

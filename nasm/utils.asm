@@ -47,15 +47,6 @@
     pop rax
 %endmacro
 
-;; Converts string value to integer.
-;; Returns integer value into RAX register.
-%macro to_int 1
-    push rdi
-    mov rdi, %1
-    call _atoi
-    pop rdi
-%endmacro
-
 ;; Randomizes integer value in range [v1; v2]
 ;; Returns integer value into RAX register.
 %macro random 2
