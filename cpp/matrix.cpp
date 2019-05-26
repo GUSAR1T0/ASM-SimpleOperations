@@ -14,27 +14,27 @@ class Matrix
         int count_cols;
         int count_all;
 
-        int** matrix;
+        int** table;
         int* sums;
 
-        void initialize(int**& matrix, int*& sums)
+        void initialize()
         {
-            cout << "Matrix (size = " << this->count_rows << "x" << this->count_cols << ", total = " << this->count_all << "):" << endl;
+            cout << "Matrix (size = " << count_rows << "x" << count_cols << ", total = " << count_all << "):" << endl;
 
             srand(time(NULL));
-            matrix = new int*[this->count_rows];
-            sums = new int[this->count_rows];
-            for (int i = 0; i < this->count_rows; i++)
+            table = new int*[count_rows];
+            sums = new int[count_rows];
+            for (int i = 0; i < count_rows; i++)
             {
-                matrix[i] = new int[this->count_cols];
+                table[i] = new int[count_cols];
                 sums[i] = 0;
-                for (int j = 0; j < this->count_cols; j++)
+                for (int j = 0; j < count_cols; j++)
                 {
-                    matrix[i][j] = randomize(0, 100);
-                    sums[i] += matrix[i][j];
-                    cout << '\t' << matrix[i][j];
+                    table[i][j] = randomize(0, 100);
+                    sums[i] += table[i][j];
+                    cout << '\t' << table[i][j];
                 }
-                sums[i] = (int) (sums[i] / this->count_cols);
+                sums[i] = (int) (sums[i] / count_cols);
                 println();
             }
             println();
@@ -46,18 +46,18 @@ class Matrix
             this->count_rows = count_rows;
             this->count_cols = count_cols;
             this->count_all = count_rows * count_cols;
-            this->initialize(matrix, sums);
+            initialize();
         }
 
         ~Matrix()
         {
             for (int i = 0; i < count_rows; i++)
             {
-                delete matrix[i];
-                matrix[i] = nullptr;
+                delete table[i];
+                table[i] = nullptr;
             }
-            delete[] matrix;
-            matrix = nullptr;
+            delete[] table;
+            table = nullptr;
             delete[] sums;
             sums = nullptr;
         }
@@ -65,11 +65,10 @@ class Matrix
         void averages()
         {
             cout << "Row average values:" << endl;
-            for (int i = 0; i < this->count_rows; i++)
+            for (int i = 0; i < count_rows; i++)
             {
-                cout << '\t' << i + 1 << " -> " << this->sums[i] << endl;
+                cout << '\t' << i + 1 << " -> " << sums[i] << endl;
             }
-
             println();
         }
 
@@ -77,11 +76,11 @@ class Matrix
         {
             bool flag = false;
             cout << "Rows comply the condition:" << endl;
-            for (int i = 0; i < this->count_rows; i++)
+            for (int i = 0; i < count_rows; i++)
             {
-                if (avg_number > this->sums[i])
+                if (avg_number > sums[i])
                 {
-                    cout << '\t' << i + 1 << " -> " << this->sums[i] << endl;
+                    cout << '\t' << i + 1 << " -> " << sums[i] << endl;
                     flag = true;
                 }
             }
@@ -106,7 +105,7 @@ int main()
 
     println();
 
-    Matrix* matrix = new Matrix(count_rows, count_cols);
+    Matrix *matrix = new Matrix(count_rows, count_cols);
 
     matrix->averages();
 

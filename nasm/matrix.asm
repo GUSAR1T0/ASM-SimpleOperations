@@ -13,6 +13,8 @@ default rel
 
 %include 'utils.asm'
 
+%define PTR_STEP 12
+
 section .rodata
     count_matrix_rows_msg:      db      "Count of matrix rows: ", 0
     .length:                    equ     $ - count_matrix_rows_msg

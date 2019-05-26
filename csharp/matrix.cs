@@ -9,37 +9,37 @@ using System;
 
 public class Matrix
 {
-    public int count_rows { get; private set; }
-    public int count_cols { get; private set; }
-    public int count_all => count_rows * count_cols;
-    public int[][] matrix;
-    public int[] sums;
+    public int CountRows { get; private set; }
+    public int CountCols { get; private set; }
+    public int CountAll => CountRows * CountCols;
+    public int[][] Table;
+    public int[] Sums;
 
-    public Matrix(int count_rows, int count_cols)
+    public Matrix(int countRows, int countCols)
     {
-        this.count_rows = count_rows;
-        this.count_cols = count_cols;
+        CountRows = countRows;
+        CountCols = countCols;
         Initialize();
     }
 
     private void Initialize()
     {
-        Console.WriteLine("Matrix (size = " + this.count_rows + "x" + this.count_cols + ", total = " + this.count_all + "):");
+        Console.WriteLine("Matrix (size = " + CountRows + "x" + CountCols + ", total = " + CountAll + "):");
 
         var rand = new Random();
-        matrix = new int[this.count_rows][];
-        sums = new int[this.count_rows];
-        for (var i = 0; i < this.count_rows; i++)
+        Table = new int[CountRows][];
+        Sums = new int[CountRows];
+        for (var i = 0; i < CountRows; i++)
         {
-            matrix[i] = new int[this.count_cols];
-            sums[i] = 0;
-            for (var j = 0; j < this.count_cols; j++)
+            Table[i] = new int[CountCols];
+            Sums[i] = 0;
+            for (var j = 0; j < CountCols; j++)
             {
-                matrix[i][j] = rand.Next(0, 100);
-                sums[i] += matrix[i][j];
-                Console.Write("\t" + matrix[i][j]);
+                Table[i][j] = rand.Next(0, 100);
+                Sums[i] += Table[i][j];
+                Console.Write("\t" + Table[i][j]);
             }
-            sums[i] = (int) (sums[i] / this.count_cols);
+            Sums[i] = (int) (Sums[i] / CountCols);
             Console.WriteLine();
         }
         Console.WriteLine();
@@ -48,23 +48,22 @@ public class Matrix
     public void Averages()
     {
         Console.WriteLine("Row average values:");
-        for (var i = 0; i < this.count_rows; i++)
+        for (var i = 0; i < CountRows; i++)
         {
-            Console.WriteLine("\t" + (i + 1) + " -> " + this.sums[i]);
+            Console.WriteLine("\t" + (i + 1) + " -> " + Sums[i]);
         }
-
         Console.WriteLine();
     }
 
-    public void Result(int avg_number)
+    public void Result(int avgNumber)
     {
         var flag = false;
         Console.WriteLine("Rows comply the condition:");
-        for (var i = 0; i < this.count_rows; i++)
+        for (var i = 0; i < CountRows; i++)
         {
-            if (avg_number > this.sums[i])
+            if (avgNumber > Sums[i])
             {
-                Console.WriteLine("\t" + (i + 1) + " -> " + this.sums[i]);
+                Console.WriteLine("\t" + (i + 1) + " -> " + Sums[i]);
                 flag = true;
             }
         }
@@ -80,25 +79,25 @@ static class Program
     static void Main(string[] args)
     {
         Console.Write("Count of matrix rows: ");
-        int.TryParse(Console.ReadLine(), out var count_rows);
-        Utils.RangeCheck(1, 20, count_rows);
+        int.TryParse(Console.ReadLine(), out var countRows);
+        Utils.RangeCheck(1, 20, countRows);
 
         Console.Write("Count of matrix cols: ");
-        int.TryParse(Console.ReadLine(), out var count_cols);
-        Utils.RangeCheck(1, 20, count_cols);
+        int.TryParse(Console.ReadLine(), out var countCols);
+        Utils.RangeCheck(1, 20, countCols);
 
         Console.WriteLine();
 
-        var matrix = new Matrix(count_rows, count_cols);
+        var matrix = new Matrix(countRows, countCols);
 
         matrix.Averages();
 
         Console.Write("Number for average values comparison: ");
-        int.TryParse(Console.ReadLine(), out var avg_number);
-        Utils.RangeCheck(0, 101, avg_number);
+        int.TryParse(Console.ReadLine(), out var avgNumber);
+        Utils.RangeCheck(0, 101, avgNumber);
 
         Console.WriteLine();
 
-        matrix.Result(avg_number);
+        matrix.Result(avgNumber);
     }
 }

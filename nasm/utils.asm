@@ -4,8 +4,6 @@
 %define SYS_WRITE 0x2000004
 %define STDIN_FLAG 0
 %define STDOUT_FLAG 1
-%define PTR_STEP 12
-%define STRING_SIZE 1024
 %define nl 10
 
 %macro range_check 3

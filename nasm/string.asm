@@ -12,6 +12,8 @@ default rel
 
 %include 'utils.asm'
 
+%define STRING_SIZE 1024
+
 section .rodata
     original_string_msg:        db      "Enter the original string:", nl
     .length:                    equ     $ - original_string_msg

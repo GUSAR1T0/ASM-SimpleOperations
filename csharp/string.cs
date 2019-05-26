@@ -10,16 +10,16 @@ using System;
 
 public class String
 {
-    public string input { get; set; }
-    private char[] inputChars => input.ToCharArray();
+    public string Input { get; set; }
+    private char[] InputChars => Input.ToCharArray();
 
     public void Result()
     {
         var flag = false;
         int count0 = 0, count1 = 0;
-        for (var i = 0; i < inputChars.Length; i++)
+        for (var i = 0; i < InputChars.Length; i++)
         {
-            char symbol = inputChars[i];
+            char symbol = InputChars[i];
             if (!flag)
             {
                 if (symbol == '0')
@@ -58,7 +58,7 @@ static class Program
         var @string = new String();
 
         Console.WriteLine("Enter the original string:");
-        @string.input = Console.ReadLine();
+        @string.Input = Console.ReadLine();
 
         Console.WriteLine();
 

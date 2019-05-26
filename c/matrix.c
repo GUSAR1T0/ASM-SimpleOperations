@@ -65,8 +65,8 @@ void initialize(struct Matrix *matrix)
     printf("Matrix (size = %dx%d, total = %d):\n", matrix->count_rows, matrix->count_cols, matrix->count_all);
 
     srand(time(NULL));
-    matrix->matrix = (int**) malloc(matrix->count_rows * sizeof(int *));
-    matrix->sums = (int*) malloc(matrix->count_rows * sizeof(int));
+    matrix->matrix = (int **) malloc(matrix->count_rows * sizeof(int *));
+    matrix->sums = (int *) malloc(matrix->count_rows * sizeof(int));
     for (int i = 0; i < matrix->count_rows; i++)
     {
         *(matrix->matrix + i) = malloc(matrix->count_cols * sizeof(int));
@@ -90,7 +90,6 @@ void averages(struct Matrix *matrix)
     {
         printf(average_row_msg, i + 1, *(matrix->sums + i));
     }
-
     println();
 }
 
