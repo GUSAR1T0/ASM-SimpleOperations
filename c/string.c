@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------------------------------- //
 // - Program:     String                                                                            - //
-// - Paraneters:  ---                                                                               - //
+// - Parameters:  ---                                                                               - //
 // - Description: Replace all zeros with ones in the text, and ones with zeros, starting from the   - //
 // -              position in which the number of preceding ones exceeds the number of preceding    - //
 // -              zeros by 1.                                                                       - //
@@ -15,7 +15,8 @@ struct String
     char input[STRING_SIZE];
 };
 
-void result(struct String *string);
+int result(struct String *string);
+void changeSymbol(struct String *string, int index);
 
 int main()
 {
@@ -25,15 +26,18 @@ int main()
 
     println();
 
+    print("The original string:\n");
+    print(string.input);
+    println();
+    println();
     print("The reworked string:\n");
-    result(&string);
-
+    print(result(&string) != 0 ? string.input : "Nothing changed!");
     println();
 
     return 0;
 }
 
-void result(struct String *string)
+int result(struct String *string)
 {
     int flag = 0, count0 = 0, count1 = 0;
     for (int i = 0; i < STRING_SIZE && string->input[i] != '\0'; i++)
@@ -51,19 +55,25 @@ void result(struct String *string)
             if (count1 - count0 >= 1)
             {
                 flag = 1;
+                changeSymbol(string, i);
             }
         }
         else
         {
-            if (string->input[i] == '0')
-            {
-                string->input[i] = '1';
-            }
-            else if (string->input[i] == '1')
-            {
-                string->input[i] = '0';
-            }
+            changeSymbol(string, i);
         }
-        printf("%c", string->input[i]);
+    }
+    return flag;
+}
+
+void changeSymbol(struct String *string, int index)
+{
+    if (string->input[index] == '0')
+    {
+        string->input[index] = '1';
+    }
+    else if (string->input[index] == '1')
+    {
+        string->input[index] = '0';
     }
 }

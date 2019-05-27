@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------------------------------- //
 // - Program:     Matrix                                                                            - //
-// - Paraneters:  ---                                                                               - //
+// - Parameters:  ---                                                                               - //
 // - Description: Determine the line numbers, the arithmetic average of elements that are less than - //
 // -              the specified value.                                                              - //
 // -------------------------------------------------------------------------------------------------- //
@@ -85,7 +85,7 @@ void initialize(struct Matrix *matrix)
 
 void averages(struct Matrix *matrix)
 {
-    printf("Row average values:\n");
+    print("Row average values:\n");
     for (int i = 0; i < matrix->count_rows; i++)
     {
         printf(average_row_msg, i + 1, *(matrix->sums + i));
@@ -96,7 +96,7 @@ void averages(struct Matrix *matrix)
 void result(struct Matrix *matrix, int avg_number)
 {
     int flag = 0;
-    printf("Rows comply the condition:\n");
+    printf("Rows comply the condition (x < %d):\n", avg_number);
     for (int i = 0; i < matrix->count_rows; i++)
     {
         if (avg_number > *(matrix->sums + i))

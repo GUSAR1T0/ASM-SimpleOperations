@@ -1,52 +1,63 @@
 // -------------------------------------------------------------------------------------------------- //
 // - Program:     String                                                                            - //
-// - Paraneters:  ---                                                                               - //
+// - Parameters:  ---                                                                               - //
 // - Description: Replace all zeros with ones in the text, and ones with zeros, starting from the   - //
 // -              position in which the number of preceding ones exceeds the number of preceding    - //
 // -              zeros by 1.                                                                       - //
 // -------------------------------------------------------------------------------------------------- //
 
 using System;
+using System.Text;
 
 public class String
 {
-    public string Input { get; set; }
-    private char[] InputChars => Input.ToCharArray();
+    public string Input 
+    { 
+        get => input.ToString();
+        set => this.input = new StringBuilder(value);
+    }
 
-    public void Result()
+    private StringBuilder input;
+
+    public bool Result()
     {
         var flag = false;
         int count0 = 0, count1 = 0;
-        for (var i = 0; i < InputChars.Length; i++)
+        for (var i = 0; i < input.Length; i++)
         {
-            char symbol = InputChars[i];
             if (!flag)
             {
-                if (symbol == '0')
+                if (input[i] == '0')
                 {
                     count0++;
                 }
-                else if (symbol == '1')
+                else if (input[i] == '1')
                 {
                     count1++;
                 }
                 if (count1 - count0 >= 1)
                 {
                     flag = true;
+                    ChangeSymbol(i);
                 }
             }
             else
             {
-                if (symbol == '0')
-                {
-                    symbol = '1';
-                }
-                else if (symbol == '1')
-                {
-                    symbol = '0';
-                }
+                ChangeSymbol(i);
             }
-            Console.Write(symbol);
+        }
+        return flag;
+    }
+
+    private void ChangeSymbol(int index)
+    {
+        if (input[index] == '0')
+        {
+            input[index] = '1';
+        }
+        else if (input[index] == '1')
+        {
+            input[index] = '0';
         }
     }
 }
@@ -62,9 +73,10 @@ static class Program
 
         Console.WriteLine();
 
-        Console.WriteLine("The reworked string:");
-        @string.Result();
-
+        Console.WriteLine("The original string:");
+        Console.WriteLine(@string.Input);
         Console.WriteLine();
+        Console.WriteLine("The reworked string:");
+        Console.WriteLine(@string.Result() ? @string.Input : "Nothing changed!");
     }
 }

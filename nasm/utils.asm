@@ -6,6 +6,9 @@
 %define STDOUT_FLAG 1
 %define nl 10
 
+extern _printf
+extern _scanf
+
 ;; Checks that number is in required range.
 %macro range_check 3
     push rsi
@@ -48,15 +51,76 @@
     pop rax
 %endmacro
 
-;; BEGIN: The function to print a new line
-.println:
+;; Prints string value
+%macro print 1
+    mov rsi, %1              ; Pointer to string 
+    mov rdx, %1.length       ; Length of string
+    call .print
+%endmacro
+
+;; Prints string value
+%macro print 2
+    mov rsi, %1              ; Pointer to string 
+    mov rdx, %2              ; Length of string
+    call .print
+%endmacro
+
+;; Reads integer value
+%macro read_int 1
+    mov rsi, %1
+    call .read_int
+%endmacro
+
+;; Reads string value
+%macro read_str 2
+    mov rsi, %1
+    mov rdx, %2
+    call .read_str
+%endmacro
+
+;; BEGIN: Prints string value
+.print:
+    mov rax, SYS_WRITE
+    mov rdi, STDOUT_FLAG     ; File descriptor
+    syscall
+    ret
+;; END
+
+;; BEGIN: Prints formatted string value
+.printf:
     push rbx
     push rax
-    lea rdi, [rel new_line]
     mov rax, 0
     call _printf
     pop rax
     pop rbx
+    ret
+
+;; BEGIN: The function to print a new line
+.println:
+    push rdi
+    lea rdi, [rel new_line]
+    call .printf
+    pop rdi
+    ret
+;; END
+
+;; BEGIN: Reads integer value
+.read_int:
+    push rdi
+    sub rsp, 8
+    mov rdi, format_int
+    mov al, 0
+    call _scanf
+    add rsp, 8
+    pop rdi
+;; END
+
+;; BEGIN: Reads string value
+.read_str:
+    mov rax, SYS_READ
+    mov rdi, STDIN_FLAG
+    syscall
     ret
 ;; END
 
@@ -120,11 +184,8 @@
 
 ;; BEGIN: The function to print about incorrect input number
 .input_error:
-    push rbx
     lea rdi, [rel input_error_msg]
-    mov rax, 0
-    call _printf
-    pop rbx
+    call .printf
     jmp .exit
 ;; END
 
@@ -136,6 +197,7 @@
 ;; END
 
 section .rodata
+    format_int:                 db      "%d", 0
     new_line:                   db      nl, 0
     input_error_msg:            db      "Incorrect input number! Choose number in range [%d, %d]", nl, 0
 

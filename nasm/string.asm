@@ -1,13 +1,12 @@
 ;; -------------------------------------------------------------------------------------------------- ;;
 ;; - Program:     String                                                                            - ;;
-;; - Paraneters:  ---                                                                               - ;;
+;; - Parameters:  ---                                                                               - ;;
 ;; - Description: Replace all zeros with ones in the text, and ones with zeros, starting from the   - ;;
 ;; -              position in which the number of preceding ones exceeds the number of preceding    - ;;
 ;; -              zeros by 1.                                                                       - ;;
 ;; -------------------------------------------------------------------------------------------------- ;;
 
 global _main
-extern _printf
 default rel
 
 %include 'utils.asm'
@@ -15,7 +14,9 @@ default rel
 %define STRING_SIZE 1024
 
 section .rodata
-    original_string_msg:        db      "Enter the original string:", nl
+    original_string_input_msg:  db      "Enter the original string:", nl
+    .length:                    equ     $ - original_string_input_msg
+    original_string_msg:        db      "The original string:", nl, 0
     .length:                    equ     $ - original_string_msg
     reworked_string_msg:        db      "The reworked string:", nl, 0
     .length:                    equ     $ - reworked_string_msg
@@ -28,17 +29,15 @@ section .bss
 section .text
     _main:
         ;; BEGIN: Read string from keyboard and print it
-        mov rax, SYS_WRITE
-        mov rdi, STDOUT_FLAG
-        mov rsi, original_string_msg
-        mov rdx, original_string_msg.length
-        syscall
-        
-        mov rax, SYS_READ
-        mov rdi, STDIN_FLAG
-        mov rsi, input
-        mov rdx, STRING_SIZE
-        syscall
+        print original_string_input_msg
+        read_str input, STRING_SIZE
+        ;; END
+
+        call .println
+
+        ;; BEGIN: Print the original string
+        print original_string_msg
+        print input, STRING_SIZE
         ;; END
 
         ;; BEGIN: Replace symbols when the condition is reached
@@ -61,6 +60,8 @@ section .text
                 cmp r15, 1
                 jl .break_out
                 inc rax
+                cmp r15, 1
+                call .replace_symbol
             .break_out:
 
             pop rcx
@@ -75,26 +76,14 @@ section .text
         call .println
 
         ;; BEGIN: Print the reworked string
-        mov rax, SYS_WRITE
-        mov rdi, STDOUT_FLAG
-        mov rsi, reworked_string_msg
-        mov rdx, reworked_string_msg.length
-        syscall
+        print reworked_string_msg
 
         cmp r15, 1
         jne .nothing_changed
-        mov rax, SYS_WRITE
-        mov rdi, STDOUT_FLAG
-        mov rsi, input
-        mov rdx, STRING_SIZE
-        syscall
+        print input, STRING_SIZE
         jmp .exit
         .nothing_changed:
-            mov rax, SYS_WRITE
-            mov rdi, STDOUT_FLAG
-            mov rsi, nothing_changed_msg
-            mov rdx, nothing_changed_msg.length
-            syscall
+            print nothing_changed_msg
         ;; END
 
         ;; BEGIN: The function to count symbols ('0' and '1')

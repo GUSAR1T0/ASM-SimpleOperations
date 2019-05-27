@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------------------------------- //
 // - Program:     Matrix                                                                            - //
-// - Paraneters:  ---                                                                               - //
+// - Parameters:  ---                                                                               - //
 // - Description: Determine the line numbers, the arithmetic average of elements that are less than - //
 // -              the specified value.                                                              - //
 // -------------------------------------------------------------------------------------------------- //
@@ -35,9 +35,9 @@ class Matrix
                     cout << '\t' << table[i][j];
                 }
                 sums[i] = (int) (sums[i] / count_cols);
-                println();
+                cout << endl;
             }
-            println();
+            cout << endl;
         }
 
     public:
@@ -69,13 +69,13 @@ class Matrix
             {
                 cout << '\t' << i + 1 << " -> " << sums[i] << endl;
             }
-            println();
+            cout << endl;
         }
 
         void result(int avg_number)
         {
             bool flag = false;
-            cout << "Rows comply the condition:" << endl;
+            cout << "Rows comply the condition (x < " << avg_number << "):" << endl;
             for (int i = 0; i < count_rows; i++)
             {
                 if (avg_number > sums[i])
@@ -103,7 +103,7 @@ int main()
     cin >> count_cols;
     rangeCheck(1, 20, count_cols);
 
-    println();
+    cout << endl;
 
     Matrix *matrix = new Matrix(count_rows, count_cols);
 
@@ -114,7 +114,7 @@ int main()
     cin >> avg_number;
     rangeCheck(0, 101, avg_number);
 
-    println();
+    cout << endl;
 
     matrix->result(avg_number);
 

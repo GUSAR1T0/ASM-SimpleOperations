@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------------------------------- //
 // - Program:     String                                                                            - //
-// - Paraneters:  ---                                                                               - //
+// - Parameters:  ---                                                                               - //
 // - Description: Replace all zeros with ones in the text, and ones with zeros, starting from the   - //
 // -              position in which the number of preceding ones exceeds the number of preceding    - //
 // -              zeros by 1.                                                                       - //
@@ -14,7 +14,7 @@ class String
     public:
         string input;
 
-        void result()
+        bool result()
         {
             bool flag = false;
             int count0 = 0, count1 = 0;
@@ -33,20 +33,27 @@ class String
                     if (count1 - count0 >= 1)
                     {
                         flag = true;
+                        changeSymbol(i);
                     }
                 }
                 else
                 {
-                    if (input[i] == '0')
-                    {
-                        input[i] = '1';
-                    }
-                    else if (input[i] == '1')
-                    {
-                        input[i] = '0';
-                    }
+                    changeSymbol(i);
                 }
-                cout << input[i];
+            }
+            return flag;
+        }
+    
+    private:
+        void changeSymbol(int index)
+        {
+            if (input[index] == '0')
+            {
+                input[index] = '1';
+            }
+            else if (input[index] == '1')
+            {
+                input[index] = '0';
             }
         }
 };
@@ -58,12 +65,10 @@ int main()
     cout << "Enter the original string:" << endl;
     cin >> string->input;
 
-    println();
+    cout << endl;
 
-    cout << "The reworked string:" << endl;
-    string->result();
-
-    println();
+    cout << "The original string:" << endl << string->input << endl << endl;
+    cout << "The reworked string:" << endl << (string->result() ? string->input : "Nothing changed!") << endl;
 
     delete string;
     string = nullptr;

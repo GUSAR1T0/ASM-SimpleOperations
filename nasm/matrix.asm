@@ -1,13 +1,11 @@
 ;; -------------------------------------------------------------------------------------------------- ;;
 ;; - Program:     Matrix                                                                            - ;;
-;; - Paraneters:  ---                                                                               - ;;
+;; - Parameters:  ---                                                                               - ;;
 ;; - Description: Determine the line numbers, the arithmetic average of elements that are less than - ;;
 ;; -              the specified value.                                                              - ;;
 ;; -------------------------------------------------------------------------------------------------- ;;
 
 global _main
-extern _printf
-extern _scanf
 default rel
 
 %include 'utils.asm'
@@ -25,9 +23,8 @@ section .rodata
     matrix_element_msg:         db      9, "%d", 0
     average_row_intro_msg:      db      "Row average values:", nl, 0
     average_row_msg:            db      9, "%d -> %d", nl, 0
-    result_msg:                 db      "Rows comply the condition:", nl, 0
+    result_msg:                 db      "Rows comply the condition (x < %d):", nl, 0
     unsuccess_msg:              db      9, "No such rows", nl, 0
-    format:                     db      "%d", 0
 
 section .data
     matrix:         times 2048  dd      0
@@ -42,34 +39,12 @@ section .bss
 section .text
     _main:
         ;; BEGIN: Read data from keyboard (rows and cols)
-        mov rax, SYS_WRITE
-        mov rdi, STDOUT_FLAG                        ; File descriptor
-        mov rsi, count_matrix_rows_msg              ; Pointer to string 
-        mov rdx, count_matrix_rows_msg.length       ; Length of string
-        syscall
-
-        sub rsp, 8
-        mov rsi, count_rows
-        mov rdi, format
-        mov al, 0
-        call _scanf
-        add rsp, 8
-
+        print count_matrix_rows_msg
+        read_int count_rows
         range_check 1, 20, count_rows
 
-        mov rax, SYS_WRITE
-        mov rdi, STDOUT_FLAG
-        mov rsi, count_matrix_cols_msg
-        mov rdx, count_matrix_cols_msg.length
-        syscall
-
-        sub rsp, 8
-        mov rsi, count_cols
-        mov rdi, format
-        mov al, 0
-        call _scanf
-        add rsp, 8
-
+        print count_matrix_cols_msg
+        read_int count_cols
         range_check 1, 20, count_cols
         ;; END
 
@@ -81,14 +56,11 @@ section .text
         ;; END
 
         ;; BEGIN: Print general information
-        push rbx
         lea rdi, [rel matrix_info_msg]
         mov rsi, [count_rows]
         mov rdx, [count_cols]
         mov rcx, [count_all]
-        mov rax, 0
-        call _printf
-        pop rbx
+        call .printf
         ;; END
 
         ;; BEGIN: Initialization of matrix
@@ -105,12 +77,9 @@ section .text
 
             divider [count_cols]
 
-            push rbx
             lea rdi, [rel matrix_element_msg]
             mov rsi, [r12]
-            mov rax, 0
-            call _printf
-            pop rbx
+            call .printf
 
             inc r14
             cmp r14, [count_cols]
@@ -168,25 +137,19 @@ section .text
         call .println
 
         ;; BEGIN: Print average row values
-        push rbx
         lea rdi, [rel average_row_intro_msg]
-        mov rax, 0
-        call _printf
-        pop rbx
+        call .printf
 
         mov r15, sums
         mov rcx, 0
         .matrix_print:
             push rcx
 
-            push rbx
             lea rdi, [rel average_row_msg]
             mov rsi, rcx
             inc rsi
             mov rdx, [r15]
-            mov rax, 0
-            call _printf
-            pop rbx
+            call .printf
 
             pop rcx
             inc rcx
@@ -198,30 +161,17 @@ section .text
         call .println
 
         ;; BEGIN: Read data from keyboard (number for comparison)
-        mov rax, SYS_WRITE
-        mov rdi, STDOUT_FLAG
-        mov rsi, comparison_number_msg
-        mov rdx, comparison_number_msg.length
-        syscall
-
-        sub rsp, 8
-        mov rsi, avg_number
-        mov rdi, format
-        mov al, 0
-        call _scanf
-        add rsp, 8
-
+        print comparison_number_msg
+        read_int avg_number
         range_check 0, 101, avg_number
         ;; END
 
         call .println
 
         ;; BEGIN: Print result
-        push rbx
         lea rdi, [rel result_msg]
-        mov rax, 0
-        call _printf
-        pop rbx
+        mov rsi, [avg_number]
+        call .printf
 
         mov r15, sums
         mov r12, 0
@@ -233,14 +183,11 @@ section .text
             cmp rax, [avg_number]
             jge .matrix_result_end
             inc r12
-            push rbx
             lea rdi, [rel average_row_msg]
             mov rsi, rcx
             inc rsi
             mov rdx, [r15]
-            mov rax, 0
-            call _printf
-            pop rbx
+            call .printf
             .matrix_result_end:
 
             pop rcx
@@ -251,10 +198,7 @@ section .text
 
         cmp r12, 0
         jne .exit
-        push rbx
         lea rdi, [rel unsuccess_msg]
-        mov rax, 0
-        call _printf
-        pop rbx
+        call .printf
         call .exit
         ;; END

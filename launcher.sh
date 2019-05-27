@@ -20,28 +20,36 @@ if [ "$?" -ne 0 ]; then
 fi
 
 if [ "$lang" = "nasm" ]; then
+    compilation_cpu_usage_before=$(top -l 1 | grep -E "^CPU")
     compilation_basetime=$(gdate +%s%N)
     cmd=`eval nasm -f macho64 $script.asm && gcc -o $script.b $script.o`
     es=$?
     compilation_endtime=$(gdate +%s%N)
+    compilation_cpu_usage_after=$(top -l 1 | grep -E "^CPU")
     language="NASM for macOS x64 (gcc)"
 elif [ "$lang" = "c" ]; then
+    compilation_cpu_usage_before=$(top -l 1 | grep -E "^CPU")
     compilation_basetime=$(gdate +%s%N)
     cmd=`eval clang -std=c99 $script.c -o $script.b`
     es=$?
     compilation_endtime=$(gdate +%s%N)
+    compilation_cpu_usage_after=$(top -l 1 | grep -E "^CPU")
     language="C language (clang/LLVM)"
 elif [ "$lang" = "cpp" ]; then
+    compilation_cpu_usage_before=$(top -l 1 | grep -E "^CPU")
     compilation_basetime=$(gdate +%s%N)
     cmd=`eval clang++ -std=c++14 $script.cpp -o $script.b`
     es=$?
     compilation_endtime=$(gdate +%s%N)
+    compilation_cpu_usage_after=$(top -l 1 | grep -E "^CPU")
     language="C++ language (clang++/LLVM)"
 elif [ "$lang" = "csharp" ]; then
+    compilation_cpu_usage_before=$(top -l 1 | grep -E "^CPU")
     compilation_basetime=$(gdate +%s%N)
     cmd=`eval csc /t:exe /out:$script.b $script.cs utils.cs`
     es=$?
     compilation_endtime=$(gdate +%s%N)
+    compilation_cpu_usage_after=$(top -l 1 | grep -E "^CPU")
     language="C# language w/ Mono framework (csc)"
 fi
 
@@ -55,45 +63,61 @@ if [ "$?" -eq 0 ]; then
     if [ "$lang" != "csharp" ]; then
         if [ "$script" = "matrix" ]; then
             if [ "$prepared" = false ]; then
-                runtime_basetime=$(gdate +%s%N)
+                execution_cpu_usage_before=$(top -l 1 | grep -E "^CPU")
+                execution_basetime=$(gdate +%s%N)
                 eval ./$script.b
-                runtime_endtime=$(gdate +%s%N)
+                execution_endtime=$(gdate +%s%N)
+                execution_cpu_usage_after=$(top -l 1 | grep -E "^CPU")
             else
-                runtime_basetime=$(gdate +%s%N)
+                execution_cpu_usage_before=$(top -l 1 | grep -E "^CPU")
+                execution_basetime=$(gdate +%s%N)
                 echo -e "$matrix_args" | eval ./$script.b
-                runtime_endtime=$(gdate +%s%N)
+                execution_endtime=$(gdate +%s%N)
+                execution_cpu_usage_after=$(top -l 1 | grep -E "^CPU")
             fi
         else
             if [ "$prepared" = false ]; then
-                runtime_basetime=$(gdate +%s%N)
+                execution_cpu_usage_before=$(top -l 1 | grep -E "^CPU")
+                execution_basetime=$(gdate +%s%N)
                 eval ./$script.b
-                runtime_endtime=$(gdate +%s%N)
+                execution_endtime=$(gdate +%s%N)
+                execution_cpu_usage_after=$(top -l 1 | grep -E "^CPU")
             else
-                runtime_basetime=$(gdate +%s%N)
+                execution_cpu_usage_before=$(top -l 1 | grep -E "^CPU")
+                execution_basetime=$(gdate +%s%N)
                 echo -e "$string_args" | eval ./$script.b
-                runtime_endtime=$(gdate +%s%N)
+                execution_endtime=$(gdate +%s%N)
+                execution_cpu_usage_after=$(top -l 1 | grep -E "^CPU")
             fi
         fi
     else
         if [ "$script" = "matrix" ]; then
             if [ "$prepared" = false ]; then
-                runtime_basetime=$(gdate +%s%N)
+                execution_cpu_usage_before=$(top -l 1 | grep -E "^CPU")
+                execution_basetime=$(gdate +%s%N)
                 eval mono ./$script.b
-                runtime_endtime=$(gdate +%s%N)
+                execution_endtime=$(gdate +%s%N)
+                execution_cpu_usage_after=$(top -l 1 | grep -E "^CPU")
             else
-                runtime_basetime=$(gdate +%s%N)
+                execution_cpu_usage_before=$(top -l 1 | grep -E "^CPU")
+                execution_basetime=$(gdate +%s%N)
                 echo -e "$matrix_args" | eval mono $script.b
-                runtime_endtime=$(gdate +%s%N)
+                execution_endtime=$(gdate +%s%N)
+                execution_cpu_usage_after=$(top -l 1 | grep -E "^CPU")
             fi
         else
             if [ "$prepared" = false ]; then
-                runtime_basetime=$(gdate +%s%N)
+                execution_cpu_usage_before=$(top -l 1 | grep -E "^CPU")
+                execution_basetime=$(gdate +%s%N)
                 eval mono ./$script.b
-                runtime_endtime=$(gdate +%s%N)
+                execution_endtime=$(gdate +%s%N)
+                execution_cpu_usage_after=$(top -l 1 | grep -E "^CPU")
             else
-                runtime_basetime=$(gdate +%s%N)
+                execution_cpu_usage_before=$(top -l 1 | grep -E "^CPU")
+                execution_basetime=$(gdate +%s%N)
                 echo -e "$string_args" | eval mono $script.b
-                runtime_endtime=$(gdate +%s%N)
+                execution_endtime=$(gdate +%s%N)
+                execution_cpu_usage_after=$(top -l 1 | grep -E "^CPU")
             fi
         fi
     fi
@@ -104,15 +128,30 @@ fi
 script=`echo "$script" | awk '{print toupper($0)}'`
 binary_file_size=`stat -f%z $script.b`
 compilation_time=$(echo "scale=6;(${compilation_endtime}-${compilation_basetime})/(1*10^09)" | bc)
-runtime_time=$(echo "scale=6;(${runtime_endtime}-${runtime_basetime})/(1*10^09)" | bc)
+execution_time=$(echo "scale=6;(${execution_endtime}-${execution_basetime})/(1*10^09)" | bc)
+compilation_cpu_usage_before=$(echo $compilation_cpu_usage_before | sed 's/CPU usage: //g')
+compilation_cpu_usage_after=$(echo $compilation_cpu_usage_after | sed 's/CPU usage: //g')
+execution_cpu_usage_before=$(echo $execution_cpu_usage_before | sed 's/CPU usage: //g')
+execution_cpu_usage_after=$(echo $execution_cpu_usage_after | sed 's/CPU usage: //g')
 echo
 echo "--------------------------------  VERDICT  --------------------------------"
-echo " \"$script\" task:"
-echo "   * language         - $language"
-echo "   * binary file size - $binary_file_size bytes"
-echo "   * compilation time - $compilation_time seconds"
-echo "   * runtime          - $runtime_time seconds"
-echo "   * prepared data    - $prepared"; 
+echo
+echo " GENERAL:"
+echo "   * task                  - $script"
+echo "   * language              - $language"
+echo "   * prepared data         - $prepared"
+echo
+echo " COMPILATION:"
+echo "   * compilation time      - $compilation_time seconds"
+echo "   * CPU usage before      - $compilation_cpu_usage_before"
+echo "   * CPU usage after       - $compilation_cpu_usage_after"
+echo "   * binary file size      - $binary_file_size bytes"
+echo
+echo " EXECUTION:"
+echo "   * execution time        - $execution_time seconds"
+echo "   * CPU usage before      - $execution_cpu_usage_before"
+echo "   * CPU usage after       - $execution_cpu_usage_after"
+echo
 echo "--------------------------------  VERDICT  --------------------------------"
 
 cd ..

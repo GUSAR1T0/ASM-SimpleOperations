@@ -13,11 +13,6 @@ void rangeCheck(int lower, int upper, int number)
     }
 }
 
-void println()
-{
-    cout << endl;
-}
-
 int randomize(int lower, int upper)
 {
     return rand() % (upper - lower + 1) + lower;

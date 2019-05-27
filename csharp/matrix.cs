@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------------------------------- //
 // - Program:     Matrix                                                                            - //
-// - Paraneters:  ---                                                                               - //
+// - Parameters:  ---                                                                               - //
 // - Description: Determine the line numbers, the arithmetic average of elements that are less than - //
 // -              the specified value.                                                              - //
 // -------------------------------------------------------------------------------------------------- //
@@ -58,7 +58,7 @@ public class Matrix
     public void Result(int avgNumber)
     {
         var flag = false;
-        Console.WriteLine("Rows comply the condition:");
+        Console.WriteLine("Rows comply the condition (x < " + avgNumber + "):");
         for (var i = 0; i < CountRows; i++)
         {
             if (avgNumber > Sums[i])
