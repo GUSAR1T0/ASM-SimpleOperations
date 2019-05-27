@@ -8,7 +8,6 @@
 global _main
 extern _printf
 extern _scanf
-extern _randomize
 default rel
 
 %include 'utils.asm'
@@ -93,14 +92,18 @@ section .text
         ;; END
 
         ;; BEGIN: Initialization of matrix
+        call .random_init
         mov r12, matrix
         mov rcx, 0
         .matrix_init:
             push rcx
-            divider [count_cols]
 
-            random 0, 100
+            mov r13, 0
+            mov r14, 100
+            call .random_interval
             mov [r12], rax
+
+            divider [count_cols]
 
             push rbx
             lea rdi, [rel matrix_element_msg]
@@ -253,4 +256,5 @@ section .text
         mov rax, 0
         call _printf
         pop rbx
+        call .exit
         ;; END

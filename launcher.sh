@@ -21,7 +21,7 @@ fi
 
 if [ "$lang" = "nasm" ]; then
     compilation_basetime=$(gdate +%s%N)
-    cmd=`eval nasm -f macho64 $script.asm && gcc -o $script.b $script.o utils.c`
+    cmd=`eval nasm -f macho64 $script.asm && gcc -o $script.b $script.o`
     es=$?
     compilation_endtime=$(gdate +%s%N)
     language="NASM for macOS x64 (gcc)"
