@@ -12,7 +12,8 @@ Assembly - Simple Operations
 ### Arguments
 
 ```console
-$> ./launcher.sh (nasm|c|cpp|csharp) (matrix|string) [-p]
+$> cd scripts/
+$scripts> ./launcher.sh (nasm|c|cpp|csharp) (matrix|string) [-p]
 ```
 
 - `./launcher.sh` - launcher script in repository root
@@ -27,10 +28,25 @@ $> ./launcher.sh (nasm|c|cpp|csharp) (matrix|string) [-p]
 3. C++ language (clang++/LLVM)
 4. C# language for macOS w/ Mono Framework (csc)
 
+## Statistics
+
+### Arguments
+
+```console
+$> cd scripts/
+$scripts> ./stats.sh
+```
+
+- `./stats.sh` - statistics script in repository root
+
+### Results of statistics
+
+All results of statistics are located into `scripts/verdicts` folder.
+
 ## Example of work
 
 ```console
-$> ./launcher.sh <LAUNGUAGE> matrix
+$scripts> ./launcher.sh <LAUNGUAGE> matrix
 Count of matrix rows: 5
 Count of matrix cols: 5
 
@@ -55,10 +71,21 @@ Rows comply the condition:
 	4 -> 37
 	5 -> 37
 
-$> ./launcher.sh <LAUNGUAGE> string
+$scripts> ./launcher.sh <LAUNGUAGE> string
 Enter the original string:
 hf93300--11111
 
 The reworked string:
 hf93300--11100
+
+$scripts> ./stats.sh
+Processing to verdicts/nasm.matrix.20190529_001355.txt .........
+Processing to verdicts/nasm.string.20190529_001355.txt .
+Processing to verdicts/c.matrix.20190529_001355.txt .........
+Processing to verdicts/c.string.20190529_001355.txt .
+Processing to verdicts/cpp.matrix.20190529_001355.txt .........
+Processing to verdicts/cpp.string.20190529_001355.txt .
+Processing to verdicts/csharp.matrix.20190529_001355.txt .........
+Processing to verdicts/csharp.string.20190529_001355.txt .
+Done!
 ```
