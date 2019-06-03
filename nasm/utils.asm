@@ -40,12 +40,14 @@ extern _scanf
     push rax
     push rdx
     push rsi
+    push rcx
     mov rax, rcx
     mov rdx, 0
     mov rsi, %1
     idiv rsi
     mov r13, rax
     mov r14, rdx
+    pop rcx
     pop rsi
     pop rdx
     pop rax
@@ -80,9 +82,13 @@ extern _scanf
 
 ;; BEGIN: Prints string value
 .print:
+    push rax
+    push rdi
     mov rax, SYS_WRITE
     mov rdi, STDOUT_FLAG     ; File descriptor
     syscall
+    pop rdi
+    pop rax
     ret
 ;; END
 
@@ -118,9 +124,13 @@ extern _scanf
 
 ;; BEGIN: Reads string value
 .read_str:
+    push rax
+    push rdi
     mov rax, SYS_READ
     mov rdi, STDIN_FLAG
     syscall
+    pop rdi
+    pop rax
     ret
 ;; END
 
@@ -184,8 +194,10 @@ extern _scanf
 
 ;; BEGIN: The function to print about incorrect input number
 .input_error:
+    push rdi
     lea rdi, [rel input_error_msg]
     call .printf
+    pop rdi
     jmp .exit
 ;; END
 
