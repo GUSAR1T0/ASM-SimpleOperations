@@ -27,8 +27,8 @@ section .rodata
     unsuccess_msg:              db      9, "No such rows", nl, 0
 
 section .data
-    matrix:         times 2048  dd      0
-    sums:           times   64  dd      0
+    matrix:      times 5120000  dd      0
+    sums:        times  160000  dd      0
 
 section .bss
     count_rows:                 resb    8
@@ -41,11 +41,11 @@ section .text
         ;; BEGIN: Read data from keyboard (rows and cols)
         print count_matrix_rows_msg
         read_int count_rows
-        range_check 1, 20, count_rows
+        range_check 1, 1000, count_rows
 
         print count_matrix_cols_msg
         read_int count_cols
-        range_check 1, 20, count_cols
+        range_check 1, 1000, count_cols
         ;; END
 
         call .println

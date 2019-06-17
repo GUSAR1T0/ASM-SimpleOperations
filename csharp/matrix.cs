@@ -80,11 +80,11 @@ static class Program
     {
         Console.Write("Count of matrix rows: ");
         int.TryParse(Console.ReadLine(), out var countRows);
-        Utils.RangeCheck(1, 20, countRows);
+        Utils.RangeCheck(1, 1000, countRows);
 
         Console.Write("Count of matrix cols: ");
         int.TryParse(Console.ReadLine(), out var countCols);
-        Utils.RangeCheck(1, 20, countCols);
+        Utils.RangeCheck(1, 1000, countCols);
 
         Console.WriteLine();
 

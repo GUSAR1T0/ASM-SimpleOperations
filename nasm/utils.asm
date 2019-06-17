@@ -15,9 +15,9 @@ extern _scanf
     push rdx
     mov rsi, %1
     mov rdx, %2
-    cmp byte[%3], %1
+    cmp dword[%3], %1
     jl .input_error
-    cmp byte[%3], %2
+    cmp dword[%3], %2
     jg .input_error
     pop rdx
     pop rsi

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Prepared data
-matrix_args="20\n20\n50"
+matrix_args="1000\n1000\n50"
 string_args="000111111010101"
 
 # Prepare for script execution

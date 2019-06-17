@@ -29,12 +29,12 @@ int main()
     int count_rows;
     print("Count of matrix rows: ");
     scanf("%d", &count_rows);
-    rangeCheck(1, 20, count_rows);
+    rangeCheck(1, 1000, count_rows);
 
     int count_cols;
     print("Count of matrix cols: ");
     scanf("%d", &count_cols);
-    rangeCheck(1, 20, count_cols);
+    rangeCheck(1, 1000, count_cols);
 
     println();
 

@@ -96,12 +96,12 @@ int main()
     int count_rows;
     cout << "Count of matrix rows: ";
     cin >> count_rows;
-    rangeCheck(1, 20, count_rows);
+    rangeCheck(1, 1000, count_rows);
 
     int count_cols;
     cout << "Count of matrix cols: ";
     cin >> count_cols;
-    rangeCheck(1, 20, count_cols);
+    rangeCheck(1, 1000, count_cols);
 
     cout << endl;
 
