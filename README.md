@@ -79,13 +79,13 @@ The reworked string:
 hf93300--11100
 
 $scripts> ./stats.sh
-Processing to verdicts/nasm.matrix.20190529_001355.txt .........
-Processing to verdicts/nasm.string.20190529_001355.txt .
-Processing to verdicts/c.matrix.20190529_001355.txt .........
-Processing to verdicts/c.string.20190529_001355.txt .
-Processing to verdicts/cpp.matrix.20190529_001355.txt .........
-Processing to verdicts/cpp.string.20190529_001355.txt .
-Processing to verdicts/csharp.matrix.20190529_001355.txt .........
-Processing to verdicts/csharp.string.20190529_001355.txt .
+Processing to verdicts/nasm.matrix.20190529_001355.txt
+Processing to verdicts/nasm.string.20190529_001355.txt
+Processing to verdicts/c.matrix.20190529_001355.txt
+Processing to verdicts/c.string.20190529_001355.txt
+Processing to verdicts/cpp.matrix.20190529_001355.txt
+Processing to verdicts/cpp.string.20190529_001355.txt
+Processing to verdicts/csharp.matrix.20190529_001355.txt
+Processing to verdicts/csharp.string.20190529_001355.txt
 Done!
 ```
